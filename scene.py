@@ -14,7 +14,17 @@ from PyQt5.QtCore import (
     QUrl
 )
 
-from settings import FRAME_TIME_MS
+from PyQt5.QtGui import (
+    QBrush,
+    QPixmap,
+    QFont,
+)
+
+from settings import (
+    FRAME_TIME_MS, 
+    SCREEN_HEIGHT, 
+    SCREEN_WIDTH
+)
 
 
 class Scene(QGraphicsScene):
@@ -28,6 +38,24 @@ class Scene(QGraphicsScene):
         self.timer = QBasicTimer()
         self.timer.start(FRAME_TIME_MS, self)
 
+        # draw black blackground
+        self._draw_background()
+
+    def _draw_background(self):
+        bg = QGraphicsRectItem()
+        bg.setRect(-1, -1, SCREEN_WIDTH+1, SCREEN_HEIGHT+1)
+        bg.setBrush(QBrush(Qt.black))
+        self.addItem(bg)
+        self._show()
+
+    def _show(self):
+        self.view = QGraphicsView(self)
+        self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.view.show()
+        self.view.setFixedSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.setSceneRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+
     def keyPressEvent(self, event):
         self.keys_pressed.add(event.key())
 
@@ -36,6 +64,7 @@ class Scene(QGraphicsScene):
 
     def timerEvent(self, event):
         self.update()
+        self.game_update()
 
-    def update(self):
-        print("update")
+    def game_update(self):
+        pass
