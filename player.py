@@ -1,4 +1,8 @@
+from PyQt5.QtCore import Qt
+
 from unit import Unit
+
+from settings import PLAYER_SPEED
 
 
 class Player(Unit):
