@@ -84,4 +84,4 @@ class Scene(QGraphicsScene):
         self.game_update()
 
     def game_update(self):
-        pass
+        self._player.move(self.keys_pressed)
