@@ -26,6 +26,10 @@ from settings import (
     SCREEN_WIDTH
 )
 
+from player import Player
+
+import os
+
 
 class Scene(QGraphicsScene):
     def __init__(self, parent = None):
@@ -41,12 +45,25 @@ class Scene(QGraphicsScene):
         # draw black blackground
         self._draw_background()
 
+        # add player to bottom center of scene
+        self._create_player()
+
+        # show window with up-to-date scene
+        self._show()
+
+    def _create_player(self):
+        self._player = Player(start_pos_x=0, start_pos_y=0, 
+                              path_to_image=os.path.join("icons", "player_icon.png"))
+        player_x_pos: int = SCREEN_WIDTH // 2 - self._player.get_width() // 2
+        player_y_pos: int = SCREEN_HEIGHT - self._player.get_height() 
+        self._player.setPos(player_x_pos, player_y_pos)
+        self.addItem(self._player)
+        
     def _draw_background(self):
         bg = QGraphicsRectItem()
         bg.setRect(-1, -1, SCREEN_WIDTH+1, SCREEN_HEIGHT+1)
         bg.setBrush(QBrush(Qt.black))
         self.addItem(bg)
-        self._show()
 
     def _show(self):
         self.view = QGraphicsView(self)
